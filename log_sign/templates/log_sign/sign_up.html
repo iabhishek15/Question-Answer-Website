@@ -1,0 +1,22 @@
+{% include 'nav.html' %}
+<div id = "container" class="container">
+	<h3>Sign Up</h3>
+	<p>Already have an account? Then please <a href = "http://127.0.0.1:8000/login/" >sign in</a>.</p>
+	<form method = "POST"> {% csrf_token %}
+	  <div class="form-group">
+	    {{ form.username }}
+	  </div>
+	  <div class="form-group">
+	  	{{ form.password 	}}
+	  </div>
+	   <div class="form-group">
+	  	{{ form.confirm_password 	}}
+	  </div>
+	  <input type="submit" class="btn btn-primary btn-sm"></input>
+	</form>
+</div>
+{% include 'bottom.html' %}
+<script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
