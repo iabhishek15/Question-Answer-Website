@@ -1,0 +1,37 @@
+<!-- <form method = "POST">{% csrf_token %} -->
+    <label>Enter the name</label>
+    <input type = "text" id = "title" />
+    <input id = "submit" type = "submit" value = "submit"/>
+<!-- </form> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+var a = document.getElementById('submit');
+a.addEventListener('click', function(event) {
+    event.preventDefault();
+    var title = $("#title").val();
+    $.ajax({
+        url:'http://127.0.0.1:8000/testing/',
+        data: {
+            'title': title
+        },
+        dataType:'json',
+        success:function() {
+            console.log("data is send");
+        }
+    })
+    //var data = JSON.parse("{{ data|escapejs }}");
+    //console.log(data);
+    // var ajax = new XMLHttpRequest();
+    // ajax.open('POST', 'http://127.0.0.1:8000/testing/');
+    // ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // let title_value = document.getElementById("title").value;
+    // ajax.send(`title = ${title_value}`);
+    // var ourRequest = new XMLHttpRequest();
+    // ourRequest.open('GET','http://127.0.0.1:8000/testing/');
+    // ourRequest.onload = function() {
+    //     let a = JSON.parse(ourRequest.responseText);
+    //     console.log(a); 
+    // };
+    // ourRequest.send();
+})
+</script>

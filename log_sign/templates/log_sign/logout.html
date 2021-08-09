@@ -1,0 +1,22 @@
+{% include 'nav.html' %}
+<div id = "actual_container" class = "container">
+    <div id = "container" class = "container mt-5">
+        <h2>Sign Out</h2>
+        <p>Are you sure you want to logout ?</p>
+        <form method = "POST">{% csrf_token %}
+            <input type = 'submit' value = "Confirm" class = "btn btn-primary btn-sm mb-3" />
+        </form>
+    </div>
+</div>  
+
+<style>
+    #actual_container {
+		width:70%;
+		background-color: white;
+		border:1px solid lightgray;
+   		box-shadow:0px 0px 5px 5px lightgray;
+	}
+    #container{
+        height: 30%;
+    }
+</style>

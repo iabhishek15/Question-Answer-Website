@@ -1,0 +1,98 @@
+
+{% include 'nav.html' %}
+<div class = "container p-5" id = "actual_container">
+	<div id = "container" class="container">
+		<h3>Sign In</h3>
+		<p>If you have not created an account yet, then please <a href = "http://127.0.0.1:8000/signup/">sign up</a> first.</p>
+		<p id = 'error_show'>This will show the error</p>
+		<form method = "POST"> {% csrf_token %}
+		  <div class="form-group">
+			{{ form.username }}
+		  </div>
+		  <div class="form-group mb-4">
+			  {{ form.password }}
+		  </div>
+		  <input id = "login_submit" type="submit" class="btn btn-primary btn-sm" value = "Sign In">
+		</form>
+	</div>
+</div>
+<!-- 
+{% include 'bottom.html' %} -->
+<style>
+	#actual_container {
+		width:70%;
+		background-color: white;
+		border:1px solid lightgray;
+   		box-shadow:0px 0px 5px 5px lightgray;
+		/* height:91%; */
+	}
+	#container {
+		width:60%;
+	}
+	#error_show{
+		visibility: hidden;
+		font-size:13px;
+		padding: 0px;
+		margin:auto;
+		color:red;
+		margin:-2px 0px 2px 10px;
+	}
+	h3, p{
+		text-align: center;
+	}
+	#login_submit{
+		width:100%;
+	}
+	*{
+		font-family: Lato,SFProText-Regular,Helvetica,Arial,sans-serif;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+var error = JSON.parse('{{error|escapejs}}');
+function isEmpty(obj) {
+  for(var prop in obj) {
+    if(obj.hasOwnProperty(prop)) {
+      return false;
+    }
+  }
+  return JSON.stringify(obj) === JSON.stringify({});//this point is main and very important
+}
+var show_error = document.getElementById('error_show');	
+var username = document.getElementById('username')
+var password = document.getElementById('password');
+if (!isEmpty(error)) {
+	show_error.innerHTML = error.password[0].message;
+	show_error.style.visibility = "visible";
+	username.value = "";
+	password.value = ""
+}
+// username.onfocus = function() {
+// 	show_error.style.visibility = "hidden";
+// 	show_error.innerHTML = 'This part shows error';
+// };
+// password.onfocus = function() {
+// 	show_error.style.visibility = "hidden";
+// 	show_error.innerHTML = 'This part shows error';
+// };
+// password.addEventListener('oninput', function() {
+// 	show_error.style.visibility = "hidden";
+// 	show_error.innerHTML = 'This part shows error';
+// })
+// document.getElementById('login_submit').addEventListener('click', function(event){
+// 	event.preventDefault();
+// 	console.log('hello')
+// })	
+//show_error.innerHTML = error.password[0].message;
+//show_error.style.visibility = "visible";
+</script>
+</body>
+</html>
+
+
+<!--
+	TODO 
+	check why add event listener does not work for onfocus and oninput 
+-->

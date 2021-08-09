@@ -1,0 +1,144 @@
+{% include 'nav.html' %}
+<div class = "container p-5" id = "actual_container">
+	<div id = "container" class="container">
+		<h3>Sign Up</h3>
+		<p>Already have an account? Then please <a href = "http://127.0.0.1:8000/login/" >sign in</a>.</p>
+		<form method = "POST"> {% csrf_token %}
+		<p id = "username_error">here comes username error</p>
+		<div class="form-group mb-1">
+			{{ form.username }}
+		</div>
+		<p id = "password_error">here comes password error</p>
+		<div class="form-group mb-1">
+			{{ form.password }}
+		</div>
+		<p id = "confirm_password_error">here comes confirm_password error</p>
+		<div class="form-group">
+			{{ form.confirm_password }}
+		</div>
+		<input type="submit" class="btn btn-primary btn-sm mt-3" value = "Sign Up" id = "signup"></input>
+		</form>
+	</div>
+</div>
+<style>
+	*{
+		font-family: SFProText-Regular,Helvetica,Arial,sans-serif;
+	}
+	#actual_container {
+		width:70%;
+		background-color: white;
+		border:1px solid lightgray;
+   		box-shadow:0px 0px 5px 5px lightgray;
+	}
+	#username_error,#password_error, #confirm_password_error{
+		visibility: hidden;
+		font-size:13px;
+		padding: 0px;
+		margin:auto;
+		color:red;
+		margin:-2px 0px 2px 10px;
+	}
+	#container {
+		width:60%;
+	}
+	h3, p{
+		text-align: center;
+	}
+	#signup{
+		width: 100%;
+	}
+</style>
+<script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+var error = JSON.parse('{{error|escapejs}}');
+var username_error = document.getElementById('username_error');	
+var password_error = document.getElementById('password_error')
+var confirm_password_error = document.getElementById('confirm_password_error');
+var username = document.getElementById('username');	
+var password = document.getElementById('password')
+var confirm_password = document.getElementById('confirm_password');
+function isEmpty(obj) {
+  for(var prop in obj) {
+    if(obj.hasOwnProperty(prop)) {
+      return false;
+    }
+  }
+  return JSON.stringify(obj) === JSON.stringify({});//this point is main and very important
+}
+console.log(error);
+if (!isEmpty(error)) {
+	username_error.innerHTML = error.confirm_password[0].message;
+	username_error.style.visibility = "visible";
+	username.value = "";
+	password.value = ""
+	confirm_password = "";
+}
+password.oninput = function() {
+	let val = password.value;
+	if (val.length < 8) {
+		password_error.innerHTML = 'Password to Short';
+		password_error.style.visibility = "visible";
+	}else {
+		password_error.style.visibility = "hidden";
+		password_error.innerHTML = 'here comes password error';
+	}
+}
+password.oninput = function() {
+	let val = password.value;
+	if (val.length < 8) {
+		password_error.innerHTML = 'Password to Short';
+		password_error.style.visibility = "visible";
+	}else {
+		password_error.style.visibility = "hidden";
+		password_error.innerHTML = 'here comes password error';
+	}
+}
+var checking_password_continous;
+
+confirm_password.oninput = function() {
+	checking_password_continous = setInterval(() => {
+		let val = confirm_password.value;
+		let val2 = password.value;
+		if (String(val) === String(val2)) {
+			confirm_password_error.style.visibility = "hidden";
+			confirm_password_error.innerHTML = 'here comes password error';
+		}else {
+			confirm_password_error.innerHTML = 'Password do not match';
+			confirm_password_error.style.visibility = "visible";
+		}		
+	},100);
+}
+username.oninput = function(){
+	let url = window.origin;
+	$.ajax({
+		url:`${url}/signup`,
+		data:{
+			'username':username.value,
+		},
+		dataType:'json',
+		success:function(event){
+			if (event["error"] !== "") {
+				username_error.innerHTML = event["error"];
+				username_error.style.visibility = "visible";
+			}else {
+				username_error.style.visibility = "hidden";
+				username_error.innerHTML = "this will show username error";
+			}
+		}
+	})
+	//var checking_username_error = JSON.parse('{{ username_error|escapejs}}');
+	//console.log(checking_username_error);
+}
+// $('body').onload(function(){
+// 	console.log('load')
+// })
+// $("#signup").click(function() {
+// 	setTimeout(() => {
+// 		confirm_password.value = "";
+// 	}, 1);
+// })
+</script>
+</body>
+</html>

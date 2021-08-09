@@ -1,0 +1,309 @@
+{% include 'nav.html' %}
+<div class = "container-fluid" id = "main_container">
+	<div class="row" id = "main_row_container">
+		<div class="container-fluid m-3" id = "actual_container">
+			<div id = "container" class = 'container-fluid mb-3 p-0'>
+				<div class = "container-fluid" id = "title_header"  >
+					<h5 class="pl-3 pb-2 pt-2 pr-3"> {{ question.title }}
+						<blockquote class="blockquote mb-1 ml-3">
+							<footer class="blockquote-footer">
+							<cite title="Source Title">by {{ question.username }}</cite>
+							{% if logged_in_username == question.username|stringformat:"s" %}
+								<span class="ml-3 offset-8"><a name = "edit_links" href="http://127.0.0.1:8000/edit/{{ question.id }}">edit</a></span>
+								<span class="ml-3 offset-8"><a id = "delete" name = "edit_links" href="#">delete</a></span>
+							{% endif %}
+							</footer>
+						</blockquote>
+					</h5>
+				</div>
+				<div id="content" class="container-fluid p-3">
+					<p class="card-text">{{ question.content }}</p>
+				</div>
+				<div class="row ml-2 p-2" id = "display_area">
+					<div class="dropup">
+						<button id = "upvote" id="preventDefaults2" class="btn dropdown-toggle dropdown-toggle-split"
+						></button>
+						<span>{{ question.upvote.count }}</span>
+					</div>
+					<div class="dropdown">
+						<button id = "downvote" id="preventDefaults1" class="btn dropdown-toggle dropdown-toggle-split"
+						></button>
+						<span>{{ question.downvote.count }}</span>
+					</div>
+					<div id = "add_comment" class = "ml-2">
+						<span><a href = "#" id = "reply">reply</a></span>
+					</div>
+					<div class="offset-7">
+						<span><cite>{{ question.date }}</cite></span>
+					</div>
+				</div>
+			</div>
+			<div id = "new_comment_area" class="container" class="form-control">
+				<form method="POST">{% csrf_token %}
+					<textarea name = "content" id = "commenting" class = "form-control mb-3"></textarea>
+					<input  class = "btn btn-primary btn-sm" type = "submit" value = 'Comment' id = "comment_submit" name = "add_comment" />
+					<button id = "cancel" class="btn btn-primary btn-sm">Cancel</button>
+				</form>
+			</div>
+			<input type = "text" id = "question_id" value = "{{ question.id }}" />
+			<input type = "text" id = "username_id" value = "{{question.username }}" />
+			{% include 'question_page/comment.html' %}
+		</div>
+	</div>
+</div>
+<style type="text/css">
+/* #actual_container{
+	background-color:red;
+} */
+#main_container {
+	width:80%;
+    padding:20px;
+    background-color:white;
+    border:1px solid lightgray;
+    box-shadow: 0px 0px 5px 5px lightgray;
+}
+/* #main_row_container {
+	background-color: red;
+} */
+/* #container {
+	width:60%;
+} */
+#container{
+	border-bottom:1px solid lightgray;
+    box-shadow:0px 1x 2px 0px lightgray;
+    border-radius: 4px;
+}
+/* #container {
+	border:1px solid lightgray;
+	box-shadow: 1px 1px 1px 1px lightgray;
+} */
+#question_area{
+	background-color:red;
+}
+/* #actual_container{
+	background-color: red;
+} */
+/* #new_comment_area {
+	display:none;
+} */
+
+p{
+    word-wrap: break-word;
+}
+
+#title_header{
+	background-color: rgb(238, 238, 238);
+	width:100%;
+}
+button {
+	background-color:red;
+}
+#question_id,#reply_edit, #username_id {
+	display:none;
+}
+#comment{
+	font-size:17px;
+}
+.new_comment_area, #new_comment_area{
+	width:60%;
+	height:10%;
+	display: none;
+}
+.commenting, #commenting{
+	height:80%;
+}
+textarea:focus{
+	outline:none;
+}
+/* #commenting{
+	width:100%;
+	height:30%;
+} */
+
+#reply_comment{
+	display:none;
+}
+ul li{
+	list-style: none;
+}
+</style>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+var new_comment = document.getElementById("reply");
+var new_comment_area = document.getElementById("new_comment_area");
+var home_url = window.origin;
+//showing the comment form and hiding the reply button
+new_comment.addEventListener('click',function() {
+	new_comment.style.visibility = "hidden";
+	new_comment_area.style.display = "block";
+})
+//this part is not required but still I am doing it just to be safe
+document.getElementById('reply').addEventListener('click', function(){
+	new_comment_area.style.display = "visible";
+})
+document.getElementById('cancel').addEventListener('click', function(){
+	new_comment_area.style.display = "none";
+})
+
+function cancelling_comment_reply(div_id) {
+	document.getElementById(`comments${div_id}`).style.display = 'none';
+	//console.log(typeof(div_id));
+}
+function replyComment(div_id) {
+	document.getElementById(`comment${div_id}`).style.display = 'block';
+}
+//editing the comment
+// var value_in_div;
+// function edit_comment(div_id){	
+// 	let reply_div = document.getElementById(`comments${div_id}`);
+// 	value_in_div = reply_div.innerHTML;
+// 	reply_div.innerHTML = `
+
+// 	`
+// }
+// function replyReply(reply_id) {
+// 	reply_edit
+// }
+// function cancelling_editing_reply(div_id){
+// 	let reply_div = document.getElementById(`comments${div_id}`);
+// 	reply_div.style.display = 'none';
+// }
+
+//using ajax for upvote
+document.getElementById('upvote').addEventListener('click', function(){
+	let id = $('#question_id').val()
+	$.ajax({
+		url:`${home_url}/${id}`,
+		data: {
+			'vote':"upvote",
+		},
+		dataType:'json',
+		success:function() {
+			
+		}
+	})
+})
+//deleting the post before that checking the user is same as logged_in_user
+var post_user = document.getElementById('username_id')
+getting_username = document.getElementById('getting_username');
+if (getting_username.value !== "None" && post_user == getting_username) {
+	//deleting the post 
+	document.getElementById('delete').addEventListener('click', function() {
+		// alert("Are you sure you want to delete?");	
+		result = window.confirm("Are you sure you want to delete?");
+		let id = $('#question_id').val()
+		if (result) {
+			$.ajax({
+				url:`${home_url}/${id}`,
+				data: {
+					'delete':"yes",
+				},
+				dataType:'json',
+				success:function() {
+				}
+			})
+			window.location.replace(`${home_url}`);
+		}
+	})
+}
+
+
+
+//using ajax for downvote
+document.getElementById('downvote').addEventListener('click', function(){
+	let id = $('#question_id').val()
+	$.ajax({
+		url:`${home_url}/${id}`,
+		data: {
+			'vote':"downvote",
+		},
+		dataType:'json',
+		success:function() {
+			
+		}
+	})
+	//console.log('hello world')
+})
+//deleting the comment
+function deleteComment(comment_id) {
+	let id = $('#question_id').val()
+	//console.log(id)
+	$.ajax({
+		url:`${home_url}/${id}`,
+		data: {
+			'delete_comment':comment_id,
+		},
+		dataType:'json',
+		success:function() {
+			
+		}
+	})
+	window.location.replace(`${home_url}/${id}`);
+}
+// var value_in_reply_id;
+// function replyComment(div_id) {
+// 	let reply_div = document.getElementById(`comments${div_id}`);
+// 	value_in_reply_id = reply_div.innerHTML;
+// 	reply_div.innerHTML += `
+// 	<div class="form-group" id = "reply_edit">
+// 		<form method="POST">{% csrf_token %}
+// 			<textarea name = "content" id = "commenting" class = "form-control"></textarea>
+// 			<input id = "reply_comment" type = "text" name = "parent_id" value = "${div_id}">
+// 			<input  class = "btn btn-primary btn-sm" type = "submit" value = 'Comment' name = "add_reply" id = "comment_reply" />
+// 			<button id = "reply_reply${div_id}"  onclick = "cancelling_comment_reply(${div_id})" class="btn btn-primary btn-sm">Cancel</button>
+// 		</form>
+// 	</div>
+// 	`
+// }
+// function cancelling_comment_reply() {
+// 	let reply_div = document.getElementById(`comments${div_id}`);
+// 	reply_div = value_in_reply_id;
+// }
+
+//using ajax to send comment data to server side
+// var comment_submit = document.getElementById('comment_submit');
+// comment_submit.addEventListener('click', function(event) {
+// 	//event.preventDefault();
+	
+// })
+</script>
+</body>
+</html>
+
+
+
+<!--
+simple interest {total interest}
+compound interest
+mean, median , mode
+percentage
+profit percentage
+expenditure income
+time distance 
+person doing work
+filling the tank
+pie chart
+ratio of water and acid
+ratio of ages
+upper limit of  median class
+right circular metallic pipe inner radius
+calculator
+11/3 of 3/17	
+divided by the greatest number and the remainder is r
+cost of one table more than cost of two chair
+area of triangle with respect to circle is given and side of triangle then what the permieter of
+circle
+totoal revenue of the company
+standard devidation
+-->
+
+
+
+
+<!--
+Things to todo
+1-> check why refreshing of page is done when buttton is cliked two times(it should happen when button is cliked one time)
+2)-> adjust the login form and signup form as input goes out of the grid
+-->

@@ -1,0 +1,42 @@
+<div id = "display_comment" class = 'container mt-5'>
+    {% for comment in comments %}
+    <div class = "container mb-4" id = "comments{{comment.id}}">
+        <div class = "row">
+            <div class = "col-2">
+                {{ comment.username }}
+            </div>
+            <div class = "col-8">
+                <p class = "m-0">{{ comment.content }}</p>
+                <div class="row ml-1">
+                    <div class="dropup">
+                        <button id = "upvote" id="preventDefaults2" class="btn dropdown-toggle dropdown-toggle-split"
+                        ></button>
+                        <span>{{ comment.upvote.count }}</span>
+                    </div>
+                    <div class="dropdown">
+                        <button id = "downvote" id="preventDefaults1" class="btn dropdown-toggle dropdown-toggle-split"
+                        ></button>
+                        <span>{{ comment.downvote.count }}</span>
+                    </div>
+                    <!-- <div id = "add_comment" class = "ml-2">
+                        <span><a href = "#" id = "comment_reply{{ comment.id }}" name = "comment_reply" href="#" onclick = "replyComment('{{comment.id}}')">reply</a></span>
+                    </div> -->
+                    {% if logged_in_username == comment.username|stringformat:"s" %}
+                        <span class="ml-3 offset-8"><a name = "edit_links" href="#" class = "{{comment.id}}" id = "editing_comment{{comment.id}}" onclick = 'edit_comment("{{comment.id}}")'>edit</a></span>
+                <span class="ml-3 offset-8"><a id = "delete_reply" name = "delete_reply" href="#" onclick = "deleteComment('{{comment.id}}')">delete</a></span>
+                    {% endif %}
+                    <span class = "ml-2"><cite title="Source Title">{{ comment.date_time}}</cite></span>
+                </div>
+            </div>
+        </div>
+        <div class = "new_comment_area" class="form-group" id = "comment{{ comment.id }}">
+            <form method="POST">{% csrf_token %}
+                <textarea name = "content" class = "commenting" class = "form-control"></textarea>
+                <input  class = "btn btn-primary btn-sm" type = "submit" value = 'Comment' name = "edit_comment" />
+                <button id = "cancel_comment_reply{{ comment.id }}"  onclick = "cancelling_comment_reply('{{ comment.id }}')" class="btn btn-primary btn-sm">Cancel</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!-- {% include 'question_page/reply.html'%} -->

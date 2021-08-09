@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <link rel = "stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    </head>
+<body>
+<nav id = "nav" class="navbar navbar-expand-sm">
+    <a class="navbar-brand" href="">ASK</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    </div>
+    <a id = "home" href = "">HOME</a>
+    <div id = "user_place" class = "btn-group offset-8" role="group">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a id = "new_question" href = "" class="nav-link">NEW QUESTION</a>
+            </li>
+            <input type  = "text" id = "getting_username" value = "{{ logged_in_username }}"> 
+            {% if logged_in_username != None %}
+              <li class="nav-item active">
+                  <a href = "" class="nav-link">{{ logged_in_username }}</a>
+              </li>
+              <li class="nav-item">
+                  <a href = "" id = "logout" class="nav-link">logout</a>
+              </li>
+            {% else %}
+              <li class="nav-item active">
+                  <a class="nav-link" href="" id = "login">Login</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="" id = "signup">signup</a>
+              </li>
+           {% endif %}
+          </ul>
+     </div>
+	</div>
+</nav>
+<style>
+#nav{
+    background-color: rgb(41, 38, 38);
+}
+#nav a{
+    color:white;
+}
+body{
+    background-color: rgb(245, 245, 245);
+}
+*{
+    font-family: Lato, "Helvetica Neue", arial, sans-serif;
+}
+#nav a:hover{
+    text-decoration: none;
+}
+#getting_username {
+    display: none;
+}
+</style>
+<script>
+    
+    var home = document.getElementById('home');
+    var home_url = window.origin;
+    home.href = home_url;
+    var new_question = document.getElementById('new_question');
+    new_question.href = `${home_url}/new-question`;
+    var getting_username = document.getElementById('getting_username');
+    if (getting_username.value !== "None") {
+        var logout = document.getElementById('logout');
+        logout.href = `${window.origin}/logout`;
+    }else {
+        var login = document.getElementById('login');
+        var signup = document.getElementById('signup');
+        login.href = `${home_url}/login`;
+        signup.href = `${home_url}/signup`;
+    }   
+</script>
