@@ -10,6 +10,10 @@ This is a website build using HTML, CSS, JS, Boostrap, ajax, django
 
 ![Question Page](https://github.com/iabhishek15/WebsiteImage/blob/main/AskPage.png)
 
+<h3>Asking The New Question</h3>
+
+![Asking Page](https://github.com/iabhishek15/WebsiteImage/blob/main/AskingQuestion.png)
+
 <h3>Sign In</h3>
 
 ![Sign Page](https://github.com/iabhishek15/WebsiteImage/blob/main/SignIn.png)
@@ -17,10 +21,6 @@ This is a website build using HTML, CSS, JS, Boostrap, ajax, django
 <h3>Sign Up</h3>
 
 ![Sign Up Page](https://github.com/iabhishek15/WebsiteImage/blob/main/SignUp.png)
-
-<h3>Asking The New Question</h3>
-
-![Asking Page](https://github.com/iabhishek15/WebsiteImage/blob/main/AskingQuestion.png)
 
 <h3>Sign Out</h3>
 
